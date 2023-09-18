@@ -6,7 +6,7 @@ import looqbox.backendchallenge.domain.models.Pokemon
 
 object PokemonMock {
 
-    fun samplePokemonRequest(query: String, sort: SortTypeEnum) = PokemonRequest(
+    fun samplePokemonRequest(query: String, sort: String) = PokemonRequest(
         query = query,
         sort = sort
     )

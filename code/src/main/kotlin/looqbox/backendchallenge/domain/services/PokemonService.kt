@@ -18,7 +18,7 @@ class PokemonService(
 
     fun getPokemonsByName(
         query: String?,
-        sortType: SortTypeEnum?
+        sortType: String?
     ): List<Pokemon> {
         try {
 
@@ -41,7 +41,7 @@ class PokemonService(
 
     fun getPokemonsByNameHighlighted(
         query: String?,
-        sortType: SortTypeEnum?
+        sortType: String?
     ): List<PokemonHighlight> {
         try {
 
@@ -64,7 +64,15 @@ class PokemonService(
         }
     }
 
-    private fun getSortType(sort: SortTypeEnum?) = sort ?: ALPHABETICAL
+    private fun getSortType(sort: String?): SortTypeEnum {
+        if (sort != null) {
+            return when (sort.lowercase()) {
+                "length" -> LENGTH
+                else -> ALPHABETICAL
+            }
+        }
+        return ALPHABETICAL
+    }
 
     private fun validateQuery(query: String?, sort: SortTypeEnum): List<Pokemon>? {
         if (query.isNullOrEmpty()) {

@@ -35,7 +35,7 @@ class PokemonServiceTest {
     fun `should return a list of pokemons ordered by length of the PokeAPI name when there is no data saved in cache`() {
 
         val query = "pidge"
-        val sort = LENGTH
+        val sort = "length"
         val pokemonList = samplePokemonList(listOf("pidgetto", "pidgeot", "pidge"))
         val expectedSize = pokemonList.size
 
@@ -52,7 +52,7 @@ class PokemonServiceTest {
         verify(exactly = 1) {
             cacheConfiguration.savePokemonToCache(
                 keyMap1 = query,
-                keyMap2 = sort,
+                keyMap2 = LENGTH,
                 keyValue = withArg { pokemon ->
                     assertEquals(pokemon.size, expectedSize)
                     assertTrue(pokemon.all { it.name.contains("pidge") })
@@ -65,11 +65,11 @@ class PokemonServiceTest {
     fun `should return a list of pokemons saved in cache ordered by name length and not call PokeAPI`() {
 
         val query = "bul"
-        val sort = ALPHABETICAL
+        val sort = "Alphabetical"
         val pokemonList = samplePokemonList(listOf("bulbasaur", "granbull", "snubbull", "tapu-bulu", "tadbulb"))
         val expectedSize = pokemonList.size
 
-        every { cacheConfiguration.getPokemonFromCache(query, sort) } returns pokemonList
+        every { cacheConfiguration.getPokemonFromCache(query, ALPHABETICAL) } returns pokemonList
 
         val pokemons = pokemonService.getPokemonsByName(query, sort)
 
@@ -87,7 +87,7 @@ class PokemonServiceTest {
     fun `should return a list of highlighted pokemons in alphabetical order from PokeAPI when there is no data saved in cache`() {
 
         val query = "loe"
-        val sort = ALPHABETICAL
+        val sort = "Alphabetical"
         val initialHighlight = "<pre>"
         val finalHighlight = "</pre>"
         val pokemonList = samplePokemonList(listOf("meloetta-aria","floette"))
@@ -108,7 +108,7 @@ class PokemonServiceTest {
         verify(exactly = 1) {
             cacheConfiguration.savePokemonHighlightedCache(
                 keyMap1 = query,
-                keyMap2 = sort,
+                keyMap2 = ALPHABETICAL,
                 keyValue = withArg { pokemon ->
                     assertEquals(pokemon.count(), expectedSize)
                     assertTrue(pokemon.all { it.name.contains("loe") })
@@ -123,7 +123,7 @@ class PokemonServiceTest {
     fun `should return a list of highlighted pokemons saved in cache in alphabetical order and not call PokeAPI`() {
 
         val query = "red"
-        val sort = ALPHABETICAL
+        val sort = "Alphabetical"
         val expectedSize = 5
         val initialHighlight = "<pre>"
         val finalHighlight = "</pre>"
@@ -135,7 +135,7 @@ class PokemonServiceTest {
             sampleHighlightPokemon("giratina-altered", "giratina-alte<pre>red</pre>"),
         )
 
-        every { cacheConfiguration.getPokemonHighlightedFromCache("red", sort) } returns pokemonList
+        every { cacheConfiguration.getPokemonHighlightedFromCache("red", ALPHABETICAL) } returns pokemonList
 
         val pokemonHighlight = pokemonService.getPokemonsByNameHighlighted(query, sort)
 
@@ -155,9 +155,9 @@ class PokemonServiceTest {
     fun `should throws exception when an error occurs in the PokeAPI when searching for pokemons`() {
 
         val query = "red"
-        val sort = ALPHABETICAL
+        val sort = "Alphabetical"
 
-        every { cacheConfiguration.getPokemonFromCache(query, sort) } returns null
+        every { cacheConfiguration.getPokemonFromCache(query, ALPHABETICAL) } returns null
         every { restConfiguration.get() } throws Exception()
 
         assertThrows<Exception> {
@@ -169,9 +169,9 @@ class PokemonServiceTest {
     fun `should throws exception when an error occurs in the PokeAPI when searching for pokemons with highlight`() {
 
         val query = "red"
-        val sort = ALPHABETICAL
+        val sort = "Alphabetical"
 
-        every { cacheConfiguration.getPokemonHighlightedFromCache(query, sort) } returns null
+        every { cacheConfiguration.getPokemonHighlightedFromCache(query, ALPHABETICAL) } returns null
         every { restConfiguration.get() } throws Exception()
 
         assertThrows<Exception> {

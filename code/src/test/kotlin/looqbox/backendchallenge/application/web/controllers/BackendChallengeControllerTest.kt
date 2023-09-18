@@ -2,7 +2,6 @@ package looqbox.backendchallenge.application.web.controllers
 
 import io.mockk.every
 import io.mockk.mockk
-import looqbox.backendchallenge.domain.enums.SortTypeEnum
 import looqbox.backendchallenge.domain.models.PokemonHighlight
 import looqbox.backendchallenge.domain.services.PokemonService
 import looqbox.backendchallenge.utils.mocks.PokemonHighlightMock.sampleHighlightPokemon
@@ -28,7 +27,7 @@ class BackendChallengeControllerTest {
     fun `should return a list of pokemons ordered alphabetically successfully`() {
 
         val query = "mon"
-        val sort = SortTypeEnum.ALPHABETICAL
+        val sort = "Alphabetical"
         val expectedSize = 4
         val pokemonRequestMock = samplePokemonRequest(query, sort)
         val pokemonList = samplePokemonList(listOf("hitmonchan", "hitmonlee", "hitmontop", "monferno"))
@@ -47,7 +46,7 @@ class BackendChallengeControllerTest {
     fun `should return a list of pokemon ordered by name length successfully`() {
 
         val query = "drag"
-        val sort = SortTypeEnum.LENGTH
+        val sort = "length"
         val expectedSize = 5
         val initialHighlight = "<pre>"
         val finalHighlight = "</pre>"
